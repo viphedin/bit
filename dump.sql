@@ -1,7 +1,7 @@
 CREATE TABLE `accounts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userId` int(11) NOT NULL,
-  `amount` decimal(12,2) NOT NULL,
+  `amount` decimal(12,6) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`)
 ) ENGINE=InnoDB;

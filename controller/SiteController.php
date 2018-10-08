@@ -2,7 +2,8 @@
 
 namespace app\controller;
 
-use \core\App;
+use core\App;
+use app\model\AccountService;
 
 class SiteController extends \core\Controller {
 
@@ -10,7 +11,7 @@ class SiteController extends \core\Controller {
      * access filters
      * @return array
      */
-    public function behaviors() {
+    public function behaviors(): array {
         return [
             'access' => [
                 'class' => '\app\model\filter\Access',
@@ -29,7 +30,7 @@ class SiteController extends \core\Controller {
      * @return \core\View
      */
     public function index() {
-        if (App::$app->auth->isAuth()) {
+        if (App::$app->getAuth()->isAuth()) {
             return $this->authIndex();
         } else {
             return $this->render('index');
@@ -37,21 +38,21 @@ class SiteController extends \core\Controller {
     }
 
     protected function authIndex() {
-        $user = App::$app->auth->user;
-        $service = new \app\model\AccountService($user);
+        $user = App::$app->getAuth()->getUser();
+        $service = new AccountService($user);
 
         return $this->render('auth-index', [
             'user' => $user,
             'account' => $service->getAccount(),
-            'error' => App::$app->request->get('error')
+            'error' => App::$app->getRequest()->get('error')
         ]);
     }
 
     public function transaction() {
-        $user = App::$app->auth->user;
-        $service = new \app\model\AccountService($user);
+        $user = App::$app->getAuth()->getUser();
+        $service = new AccountService($user);
 
-        $amount = intval(App::$app->request->get('amount', 0));
+        $amount = floatval(App::$app->getRequest()->get('amount', 0));
 
         if (!$amount) {
             return '/';

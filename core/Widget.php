@@ -4,16 +4,16 @@ namespace core;
 
 abstract class Widget {
 
-    public static function widget($params = []) {
+    public static function widget(array $params = []) {
         $class = get_called_class();
         $object = new $class();
 
         return $object->run($params);
     }
 
-    abstract public function run($params = []);
+    abstract public function run(array $params = []);
 
-    public function render($options) {
+    public function render(array $options): string {
         $view = new View();
 
         $path = explode('\\', get_class($this));

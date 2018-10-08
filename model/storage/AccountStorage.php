@@ -2,6 +2,8 @@
 
 namespace app\model\storage;
 
+use \app\model\db\Account;
+
 class AccountStorage extends Storage {
 
     protected $model = 'app\model\db\Account';
@@ -10,21 +12,23 @@ class AccountStorage extends Storage {
      * @param int $userId
      * @return \app\model\db\Account
      */
-    public function getAccount($userId) {
-        $stmt = $this->db->prepare('SELECT * FROM accounts WHERE userId = :userId');
+    public function getAccount(int $userId, bool $lock = false): ?Account {
+        $stmt = $this->db->prepare('SELECT * FROM accounts WHERE userId = :userId' . ($lock ? ' FOR UPDATE' : ''));
         $stmt->execute([
             ':userId' => $userId
         ]);
 
-        return $stmt->fetchObject($this->model);
+        $result = $stmt->fetchObject($this->model);
+
+        return $result ?: null;
     }
 
     /*
      * @param \app\model\db\Account $account
-     * @param int $amount
+     * @param float $amount
      */
-    public function doWithdraw($account, $amount) {
-        $stmt = $this->db->prepare('UPDATE accounts as accountsW SET amount = amount - :amount WHERE id = :id');
+    public function doWithdraw(Account $account, float $amount) {
+        $stmt = $this->db->prepare('UPDATE accounts SET amount = amount - :amount WHERE id = :id');
         $stmt->execute([
             ':amount' => $amount,
             ':id' => $account->id

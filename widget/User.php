@@ -6,7 +6,7 @@ use core\App;
 
 class User extends \core\Widget {
 
-    public function run($params = []) {
+    public function run(array $params = []) {
         echo $this->render([
             'auth' => App::$app->auth->isAuth()
         ]);

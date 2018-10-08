@@ -3,21 +3,23 @@
 namespace app\controller;
 
 use core\App;
+use \core\Controller;
+use \app\model\form\Login;
 
-class AuthController extends \core\Controller {
-    
+class AuthController extends Controller {
+
     public function login() {
         $error = false;
 
-        $form = new \app\model\form\Login();
+        $form = new Login();
 
-        if (App::$app->request->isPost()) {
+        if (App::$app->getRequest()->isPost()) {
             $error = true;
 
-            $form->load(App::$app->request->post());
-            
-            $result = App::$app->auth->auth($form->login, $form->password);
-            
+            $form->load(App::$app->getRequest()->post());
+
+            $result = App::$app->getAuth()->auth($form->login, $form->password);
+
             if ($result) {
                 return '/';
             }
@@ -28,10 +30,10 @@ class AuthController extends \core\Controller {
             'form' => $form
         ]);
     }
-    
+
     public function logout() {
-        App::$app->auth->logout();
-        
+        App::$app->getAuth()->logout();
+
         return '/';
     }
 }

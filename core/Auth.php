@@ -2,6 +2,9 @@
 
 namespace core;
 
+use core\Session;
+use core\model\AuthUser;
+
 class Auth {
 
     protected $guestGroup = '';
@@ -14,7 +17,7 @@ class Auth {
 
     protected $user = null;
 
-    public function __construct($options = [], $storage = null) {
+    public function __construct(array $options = [], Session $storage = null) {
         $this->storage = $storage;
 
         $this->userOptions = $options['users'] ?? [];
@@ -30,7 +33,7 @@ class Auth {
         }
     }
 
-    public function auth($login, $password) {
+    public function auth(string $login, string $password): bool {
         $this->user = null;
 
         $this->initUserStorage();
@@ -53,7 +56,7 @@ class Auth {
         return true;
     }
 
-    public function isAuth() {
+    public function isAuth(): bool {
         return $this->user === null ? false : true;
     }
 
@@ -62,6 +65,10 @@ class Auth {
             $this->storage->set('auth', false);
             $this->storage->set('authLogin', '');
         }
+    }
+
+    public function getUser(): ?AuthUser {
+        return $this->user;
     }
 
     public function __get($property) {

@@ -3,12 +3,13 @@
 namespace app\model\filter;
 
 use core\App;
+use core\model\Filter;
 
-class Access {
+class Access implements Filter {
 
     protected $filters = [];
 
-    public function __construct($options) {
+    public function __construct(array $options) {
         $this->filters = $options['filters'] ?? [];
     }
 
@@ -17,7 +18,7 @@ class Access {
      * @param string $action
      * @return boolean
      */
-    public function filter($action) {
+    public function filter(string $action): bool {
         foreach ($this->filters as $filter) {
             $actions = $filter['action'] ?? [];
 
@@ -33,8 +34,8 @@ class Access {
         return true;
     }
 
-    protected function checkAuth($auth) {
-        if ($auth !== null && App::$app->auth->isAuth() != 'auth') {
+    protected function checkAuth(bool $auth): bool {
+        if ($auth !== null && App::$app->getAuth()->isAuth() != $auth) {
             return false;
         }
 

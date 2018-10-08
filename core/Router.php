@@ -5,38 +5,38 @@ namespace core;
 class Router {
 
     /**
-     * 
+     *
      * @var array
      */
     protected $routes = [];
-    
+
     /**
-     * 
+     *
      * @param array $routes
      */
-    public function __construct($routes = []) {
+    public function __construct(array $routes = []) {
         if (is_array($routes)) {
             foreach ($routes as $route => $controller) {
                 $this->addRoute($route, $controller);
             }
         }
     }
-    
+
     /**
-     * 
+     *
      * @param string $route
      * @param array $controller
      */
-    public function addRoute($route, $controller) {
+    public function addRoute(string $route, array $controller) {
         $this->routes[$route] = $controller;
     }
 
     /**
-     * 
+     *
      * @param mixed $requestUrl
      * @return \core\Route
      */
-    public function match($requestUrl = null) {
+    public function match($requestUrl = null): Route {
         $matched = false;
 
         if ($requestUrl === null) {
@@ -56,11 +56,11 @@ class Router {
                 return new Route($handler, $this->cleanParams($params));
             }
         }
-        
+
         return $matched;
     }
-    
-    protected function makePattern($route) {
+
+    protected function makePattern(string $route): string {
         if (preg_match_all('/(\/|\.|)\[(?::([^:\]]*+))?\]/iU', $route, $matches, PREG_SET_ORDER)) {
             foreach($matches as $match) {
                 list($block, $pre, $param) = $match;
@@ -72,11 +72,11 @@ class Router {
                 $route = str_replace($block, $pattern, $route);
             }
         }
-        
+
         return $route;
     }
-    
-    protected function cleanParams($params) {
+
+    protected function cleanParams(array $params): array {
         foreach ($params as $key => $value) {
             if (is_numeric($key)) {
                 unset($params[$key]);

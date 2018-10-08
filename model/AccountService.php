@@ -2,6 +2,10 @@
 
 namespace app\model;
 
+use \app\model\db\User;
+use \app\model\db\Account;
+use \app\model\storage\AccountStorage;
+
 class AccountService {
 
     protected $user = null;
@@ -12,25 +16,23 @@ class AccountService {
     /*
      * @param \app\model\db\User $user
      */
-    public function __construct($user) {
+    public function __construct(User $user) {
         $this->user = $user;
-        $this->storage = new \app\model\storage\AccountStorage();
+        $this->storage = new AccountStorage();
     }
 
     /*
      * списание средств со счета
      * @param double $amount
-     * @return boolean
+     * @return bool
      */
-    public function withdraw($amount) {
+    public function withdraw(float $amount): bool {
         $this->message = '';
 
         $this->storage->beginTransaction();
 
         try {
-            $this->storage->lock();
-
-            $account = $this->storage->getAccount($this->user->id);
+            $account = $this->storage->getAccount($this->user->id, true);
 
             $totalAmount = $account->amount;
 
@@ -41,10 +43,8 @@ class AccountService {
             $this->storage->doWithdraw($account, $amount);
 
             $this->storage->commit();
-            $this->storage->unlock();
         } catch (\Exception $e) {
             $this->storage->rollBack();
-            $this->storage->unlock();
 
             $this->message = $e->getMessage();
 
@@ -57,14 +57,14 @@ class AccountService {
     /*
      * @return string
      */
-    public function getMessage() {
+    public function getMessage(): string {
         return $this->message;
     }
 
     /*
      * @return \app\model\db\Account
      */
-    public function getAccount() {
+    public function getAccount(): Account {
         return $this->storage->getAccount($this->user->id);
     }
 }

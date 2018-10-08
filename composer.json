@@ -1,0 +1,16 @@
+{
+    "name": "Bit",
+    "authors": [
+        {
+            "name": "Bulaev",
+            "email": "viphedin@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "core\\": "core",
+            "app\\": ""
+        }
+    },
+    "require": {}
+}

@@ -1,6 +1,6 @@
 <div style="margin: 0 auto; width: 40%">
     <p>Пользователь <?php echo $user->login; ?></p>
-    <p>На счету <?php echo $account->amount; ?> руб.</p
+    <p>На счету <?php echo sprintf('%.2f', $account->amount); ?> руб.</p
     <br />
     <br />
     <h3>Перевести</h3>

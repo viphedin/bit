@@ -15,7 +15,7 @@ class App {
 
     protected $namespace = 'app';
 
-    protected function __construct($config = []) {
+    protected function __construct(array $config = []) {
         $this->namespace = $config['namespace'] ?? $this->namespace;
 
         $this->session = Session::getInstance();
@@ -41,7 +41,7 @@ class App {
      *
      * @param array $config
      */
-    public static function run($config = []) {
+    public static function run(array $config = []) {
         if (self::$app === null) {
             self::$app = new App($config);
         }
@@ -61,6 +61,26 @@ class App {
                 header('Location: ' . $result);
             }
         }
+    }
+
+    public function getSession(): Session {
+        return $this->session;
+    }
+
+    public function getRequest(): Request {
+        return $this->request;
+    }
+
+    public function getAssets(): Assets {
+        return $this->assets;
+    }
+
+    public function getAuth(): Auth {
+        return $this->auth;
+    }
+
+    public function getDb(): \PDO {
+        return $this->db;
     }
 
     public function __get($property) {

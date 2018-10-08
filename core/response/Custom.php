@@ -3,9 +3,9 @@
 namespace core\response;
 
 interface Custom {
-    
+
     /**
      * response
      */
-    public function response();
+    public function response(): string;
 }

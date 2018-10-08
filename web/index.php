@@ -1,9 +1,13 @@
 <?php
 
+use core\App;
+
 ini_set("display_errors", 1);
 error_reporting(E_ALL);
 
-require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'autoload.php';
+define ('BASE_DIR', dirname(__DIR__));
+
+require BASE_DIR . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
 $configFile = BASE_DIR . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config.php';
 
@@ -13,4 +17,4 @@ if (is_file($configFile)) {
     $config = include $configFile;
 }
 
-\core\App::run($config);
+App::run($config);

@@ -20,7 +20,7 @@ abstract class Controller {
      *
      * @param array $params
      */
-    public function __construct($params = []) {
+    public function __construct(array $params = []) {
         $this->params = $params;
     }
 
@@ -28,7 +28,7 @@ abstract class Controller {
      *
      * @return array
      */
-    public function behaviors() {
+    public function behaviors(): array {
         return [];
     }
 
@@ -37,7 +37,7 @@ abstract class Controller {
      * @param string $template
      * @param array $options
      */
-    public function render($template, $options = []) {
+    public function render(string $template, array $options = []): View {
         $view = new View($this->layout);
 
         if (substr($template, 0, 1) != '/') {

@@ -11,7 +11,7 @@ class User implements \core\model\AuthUser {
     /*
      * @return string
      */
-    public function getPassword() {
+    public function getPassword(): string {
         return $this->password;
     }
 }

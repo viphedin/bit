@@ -9,7 +9,7 @@ abstract class Storage {
     protected $db = null;
 
     public function __construct() {
-        $this->db = App::$app->db;
+        $this->db = App::$app->getDb();
     }
 
     public function beginTransaction() {
