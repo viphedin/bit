@@ -31,6 +31,8 @@ class AccountService {
 
         $this->storage->beginTransaction();
 
+        $amount = abs($amount);
+
         try {
             $account = $this->storage->getAccount($this->user->id, true);
 
